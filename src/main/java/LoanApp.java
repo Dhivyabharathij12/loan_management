@@ -1,0 +1,47 @@
+import com.app.controller.UserController;
+import com.app.util.DataBaseConnection;
+import io.javalin.Javalin;
+import io.javalin.apibuilder.ApiBuilder;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class LoanApp {
+    public static void main(String[] args) {
+        Javalin app = Javalin.create().start(7777);
+        dataBaseInit();
+
+        UserController userController=new UserController();
+
+        app.routes(() -> {
+            ApiBuilder.path("/register", () -> {
+                ApiBuilder.post("/", userController::register);
+            });
+            ApiBuilder.path("/auth", () -> {
+                ApiBuilder.post("/login", userController::login);
+            });
+
+        });
+    }
+
+    public static void dataBaseInit() {
+
+        try  {
+            Connection connection = DataBaseConnection.getDbConnection();
+            String userTable = "CREATE TABLE IF NOT EXISTS users ( id SERIAL PRIMARY KEY, name VARCHAR(50) NOT NULL,username VARCHAR(50) UNIQUE NOT NULL, password VARCHAR(255) NOT NULL, role VARCHAR(20) NOT NULL);";
+
+            String loanTable = "CREATE TABLE IF NOT EXISTS loans (id SERIAL PRIMARY KEY, user_id INT REFERENCES users(id), amount DECIMAL(10,2) NOT NULL, loan_type VARCHAR(50) NOT NULL, status VARCHAR(20) DEFAULT 'pending', created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
+
+            PreparedStatement userTableStatement = connection.prepareStatement(userTable);
+            PreparedStatement loanTableStatement = connection.prepareStatement(loanTable);
+
+            userTableStatement.executeUpdate();
+            loanTableStatement.executeUpdate();
+            System.out.println("Table created successfully!");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
