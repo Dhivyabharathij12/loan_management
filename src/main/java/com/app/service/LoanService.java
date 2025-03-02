@@ -10,6 +10,9 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.app.entity.LoanStatus.APPROVED;
+import static com.app.entity.LoanStatus.REJECTED;
+
 public class LoanService {
    private final LoanRepository loanRepository=new LoanRepository();
 
@@ -31,8 +34,8 @@ public class LoanService {
        return loanRepository.saveLoan(loan);
     }
 
-    public List<JSONObject> getLoansListForUser(JSONObject json) {
-        String userName= json.getString("username");
+    public List<JSONObject> getLoansListForUser(String userName) {
+
         List<Loan> loanList= loanRepository.getLoanListByUserName(userName);
         List<JSONObject> loanObjects=new ArrayList<>();
 
@@ -48,5 +51,17 @@ public class LoanService {
         }
 
         return loanObjects;
+    }
+
+    public boolean approveLoan(JSONObject jsonBody) {
+
+        int loanId =  jsonBody.getInt("loanId");
+        return loanRepository.updateLoanStatus( loanId, APPROVED);
+    }
+
+    public boolean rejectLoan(JSONObject jsonBody) {
+
+        int loanId =  jsonBody.getInt("loanId");
+        return loanRepository.updateLoanStatus( loanId, REJECTED);
     }
 }

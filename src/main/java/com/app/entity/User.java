@@ -2,10 +2,19 @@ package com.app.entity;
 
 public class User {
 
+    private Integer id;
     private String name;
     private String role;
     private String userName;
     private String passWord;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

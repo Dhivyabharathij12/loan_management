@@ -43,6 +43,7 @@ public class UserRepository {
             ResultSet rs = userStatement.executeQuery();
             while(rs.next()){
                 User user = new User();
+                user.setId(rs.getInt("id"));
                 user.setName(rs.getString("name"));
                 user.setUserName(rs.getString("username"));
                 user.setPassWord(rs.getString("password"));

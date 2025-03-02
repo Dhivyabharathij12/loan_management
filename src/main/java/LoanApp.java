@@ -26,14 +26,15 @@ public class LoanApp {
                 ApiBuilder.post("/login", userController::login);
             });
 
-            ApiBuilder.path("/loans", () -> {
+            ApiBuilder.path("user/loans", () -> {
                 ApiBuilder.before(AuthMiddleware::authenticate);
                 ApiBuilder.post("/apply",loanController::applyLoan);
                 ApiBuilder.get("/all", loanController::getLoans);
-
-                ApiBuilder.before(AuthMiddleware::authorizeManager);
-                ApiBuilder.put("/approve/{id}", loanController::approveLoan);
-                ApiBuilder.put("/reject/{id}", loanController::rejectLoan);
+            });
+            ApiBuilder.path("manager/loans", () -> {
+                ApiBuilder.before(AuthMiddleware::authenticate);
+                ApiBuilder.put("/approve", loanController::approveLoan);
+                ApiBuilder.put("/reject", loanController::rejectLoan);
             });
 
         });
