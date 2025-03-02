@@ -1,35 +1,32 @@
 package com.app.service;
 
-import com.app.dao.DataBaseRepository;
+import com.app.repository.UserRepository;
 import com.app.entity.User;
 import org.json.JSONObject;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Base64;
+import static com.app.util.HashUtil.hashPassword;
 
 public class UserService {
 
-    DataBaseRepository repository=new DataBaseRepository();
+    UserRepository repository=new UserRepository();
 
 
-    public void registerUser(JSONObject jsonBody) {
+    public boolean registerUser(JSONObject jsonBody) {
+
+        String hashPassword =hashPassword(jsonBody.getString("password"));
 
         User user=new User();
         user.setUserName( jsonBody.getString("userName"));
-        user.setPassWord(jsonBody.getString("password"));
+        user.setPassWord(hashPassword);
         user.setRole(jsonBody.getString("role"));
         user.setName(jsonBody.getString("name"));
 
-        repository.saveUser(user);
+        return repository.saveUser(user);
 
 
     }
 
     public User getUser(String userName) {
-        User user= repository.getUser(userName);
-        String decodedPassword= new String(Base64.getDecoder().decode(user.getPassWord()));
-        user.setPassWord(decodedPassword);
-        return user;
+        return repository.getUser(userName);
     }
 }

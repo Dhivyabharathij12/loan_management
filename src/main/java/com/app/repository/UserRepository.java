@@ -1,36 +1,35 @@
-package com.app.dao;
+package com.app.repository;
 
 import com.app.entity.User;
 import com.app.util.DataBaseConnection;
 
-import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.Base64;
 
-public class DataBaseRepository {
+public class UserRepository {
 
 
-    public void saveUser(User user) {
+    public boolean saveUser(User user) {
         try {
             Connection connection= DataBaseConnection.getDbConnection();
-            String encodedPassword= Base64.getEncoder().encodeToString(user.getPassWord().getBytes(StandardCharsets.UTF_8));
 
             PreparedStatement userStatement = connection.prepareStatement("INSERT INTO users (name, username, password, role) VALUES (?, ?, ?, ?)");
 
             userStatement.setString(1, user.getName());
             userStatement.setString(2, user.getUserName());
-            userStatement.setString(3, encodedPassword);
+            userStatement.setString(3, user.getPassWord());
             userStatement.setString(4, user.getRole());
 
             int userAdded = userStatement.executeUpdate();
             if (userAdded > 0) {
                 System.out.println("User registered successfully!");
+                return true;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     public User getUser(String userName) {

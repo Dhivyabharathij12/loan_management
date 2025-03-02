@@ -1,4 +1,6 @@
+import com.app.controller.LoanController;
 import com.app.controller.UserController;
+import com.app.service.AuthMiddleware;
 import com.app.util.DataBaseConnection;
 import io.javalin.Javalin;
 import io.javalin.apibuilder.ApiBuilder;
@@ -9,10 +11,12 @@ import java.sql.SQLException;
 
 public class LoanApp {
     public static void main(String[] args) {
+
         Javalin app = Javalin.create().start(7777);
         dataBaseInit();
 
         UserController userController=new UserController();
+        LoanController loanController=new LoanController();
 
         app.routes(() -> {
             ApiBuilder.path("/register", () -> {
@@ -20,6 +24,16 @@ public class LoanApp {
             });
             ApiBuilder.path("/auth", () -> {
                 ApiBuilder.post("/login", userController::login);
+            });
+
+            ApiBuilder.path("/loans", () -> {
+                ApiBuilder.before(AuthMiddleware::authenticate);
+                ApiBuilder.post("/apply",loanController::applyLoan);
+                ApiBuilder.get("/all", loanController::getLoans);
+
+                ApiBuilder.before(AuthMiddleware::authorizeManager);
+                ApiBuilder.put("/approve/{id}", loanController::approveLoan);
+                ApiBuilder.put("/reject/{id}", loanController::rejectLoan);
             });
 
         });
