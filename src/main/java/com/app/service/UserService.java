@@ -8,8 +8,11 @@ import static com.app.util.HashUtil.hashPassword;
 
 public class UserService {
 
-    UserRepository repository=new UserRepository();
+    UserRepository repository;
 
+    public UserService(UserRepository repository){
+        this.repository=repository;
+    }
 
     public boolean registerUser(JSONObject jsonBody) {
 

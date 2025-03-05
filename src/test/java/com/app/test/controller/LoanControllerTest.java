@@ -19,7 +19,7 @@ class LoanControllerTest {
     @BeforeEach
     void setUp() {
         loanService = mock(LoanService.class);
-        loanController = new LoanController();
+        loanController = new LoanController(loanService);
         ctx = mock(Context.class);
 
         // Mock the status and json methods to prevent NullPointerException

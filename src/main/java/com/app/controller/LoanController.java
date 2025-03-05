@@ -9,7 +9,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class LoanController {
     private static final Map<Integer, JSONObject> loans = new ConcurrentHashMap<>();
-    LoanService loanService=new LoanService();
+    LoanService loanService;
+    public LoanController(LoanService loanService){
+        this.loanService=loanService;
+    }
     public void applyLoan(Context ctx) {
         String body = ctx.body();
         JSONObject json = new JSONObject(body);

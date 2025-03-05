@@ -2,7 +2,11 @@ package com.app;
 
 import com.app.controller.LoanController;
 import com.app.controller.UserController;
+import com.app.repository.LoanRepository;
+import com.app.repository.UserRepository;
 import com.app.service.AuthMiddleware;
+import com.app.service.LoanService;
+import com.app.service.UserService;
 import com.app.util.DataBaseConnection;
 import io.javalin.Javalin;
 import io.javalin.apibuilder.ApiBuilder;
@@ -20,9 +24,16 @@ public class LoanApp {
         Javalin app = Javalin.create().start(port);
         dataBaseInit();
 
-        UserController userController=new UserController();
-        LoanController loanController=new LoanController();
+        UserRepository userRepository = new UserRepository();
+        LoanRepository loanRepository = new LoanRepository();
 
+        // Create services
+        UserService userService = new UserService(userRepository);
+        LoanService loanService = new LoanService(loanRepository);
+
+        // Create controllers using constructor injection
+        UserController userController = new UserController(userService);
+        LoanController loanController = new LoanController(loanService);
         app.routes(() -> {
             ApiBuilder.path("/register", () -> {
                 ApiBuilder.post("/", userController::register);

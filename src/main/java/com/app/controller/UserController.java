@@ -10,8 +10,12 @@ import static com.app.util.HashUtil.verifyPassword;
 import static com.app.util.TokenUtil.generateToken;
 
 public class UserController {
-    UserService userService =new UserService();
+    private final UserService userService;
 
+    // Constructor for dependency injection
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
     public void login(@NotNull Context context) {
 
         String body= context.body();

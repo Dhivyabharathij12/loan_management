@@ -14,8 +14,11 @@ import static com.app.entity.LoanStatus.APPROVED;
 import static com.app.entity.LoanStatus.REJECTED;
 
 public class LoanService {
-   private final LoanRepository loanRepository=new LoanRepository();
+   private final LoanRepository loanRepository;
 
+   public LoanService(LoanRepository loanRepository){
+       this.loanRepository=loanRepository;
+   }
 
     public boolean saveLoanDetails(JSONObject json) {
 
