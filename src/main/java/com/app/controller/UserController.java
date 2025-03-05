@@ -21,7 +21,7 @@ public class UserController {
         User user=userService.getUser(userName);
 
         if(verifyPassword(password, user.getPassWord())){
-            context.status(200).json(new JSONObject().put("message", "Login successful").put("token", generateToken(user.getUserName(), user.getRole())).toString());
+            context.status(200).json(new JSONObject().put("message", "Login successfully").put("token", generateToken(user.getUserName(), user.getRole())).toString());
         } else {
             context.status(401).json(new JSONObject().put("message", "Invalid credentials").toString());
         }

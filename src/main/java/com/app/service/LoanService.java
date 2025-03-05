@@ -41,7 +41,27 @@ public class LoanService {
 
         for(Loan loan:loanList){
             JSONObject jsonObj = new JSONObject();
+            jsonObj.put("id",loan.getId());
             jsonObj.put("userName",loan.getUserName());
+            jsonObj.put("amount",loan.getAmount());
+            jsonObj.put("loanType",loan.getLoanType());
+            jsonObj.put("status",loan.getStatus());
+            jsonObj.put("createdDate",loan.getCreatedDate());
+
+            loanObjects.add(jsonObj);
+        }
+
+        return loanObjects;
+    }
+
+    public List<JSONObject> getLoansList() {
+
+        List<Loan> loanList= loanRepository.getLoanList();
+        List<JSONObject> loanObjects=new ArrayList<>();
+
+        for(Loan loan:loanList){
+            JSONObject jsonObj = new JSONObject();
+            jsonObj.put("id",loan.getId());
             jsonObj.put("amount",loan.getAmount());
             jsonObj.put("loanType",loan.getLoanType());
             jsonObj.put("status",loan.getStatus());

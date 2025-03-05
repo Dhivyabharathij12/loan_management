@@ -55,7 +55,34 @@ public class LoanRepository {
             ResultSet rs = loanStatement.executeQuery();
             while(rs.next()){
                 Loan loan = new Loan();
-                loan.setUserName(rs.getString("user_id"));
+                loan.setId(rs.getInt("id"));
+                loan.setUserName(user.getUserName());
+                loan.setAmount(rs.getLong("amount"));
+                loan.setStatus(rs.getString("status"));
+                loan.setLoanType(LoanType.valueOf(rs.getString("loan_type")));
+                loan.setCreatedDate(rs.getTimestamp("created_date"));
+                loanList.add(loan);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return loanList;
+    }
+
+    public List<Loan> getLoanList() {
+        List<Loan> loanList=new ArrayList<>();
+
+        try {
+
+            Connection connection= DataBaseConnection.getDbConnection();
+
+            PreparedStatement loanStatement = connection.prepareStatement("select * from loans");
+
+            ResultSet rs = loanStatement.executeQuery();
+            while(rs.next()){
+                Loan loan = new Loan();
+                loan.setId(rs.getInt("id"));
                 loan.setAmount(rs.getLong("amount"));
                 loan.setStatus(rs.getString("status"));
                 loan.setLoanType(LoanType.valueOf(rs.getString("loan_type")));

@@ -16,7 +16,7 @@ public class UserService {
         String hashPassword =hashPassword(jsonBody.getString("password"));
 
         User user=new User();
-        user.setUserName( jsonBody.getString("userName"));
+        user.setUserName( jsonBody.getString("username"));
         user.setPassWord(hashPassword);
         user.setRole(jsonBody.getString("role"));
         user.setName(jsonBody.getString("name"));

@@ -1,10 +1,7 @@
 package com.app.controller;
 
-import com.app.entity.Loan;
-import com.app.entity.LoanType;
 import com.app.service.LoanService;
 import io.javalin.http.Context;
-import org.eclipse.jetty.util.StringUtil;
 import org.json.JSONObject;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +16,7 @@ public class LoanController {
 
         boolean isLoanAdded=loanService.saveLoanDetails(json);
         if(isLoanAdded){
-            ctx.status(200).json(new JSONObject().put("message", "Loan registered successful").toString());
+            ctx.status(200).json(new JSONObject().put("message", "Loan registered successfully").toString());
         } else {
             ctx.status(401).json(new JSONObject().put("message", "Error happened, Loan not registered").toString());
         }
@@ -31,25 +28,30 @@ public class LoanController {
         ctx.status(200).json(loanList.toString());
     }
 
+    public void getAllLoans(Context ctx) {
+        List<JSONObject> loanList = loanService.getLoansList();
+        ctx.status(200).json(loanList.toString());
+    }
+
     public void approveLoan(Context ctx) {
         String body= ctx.body();
         JSONObject jsonBody = new JSONObject(body);
         boolean isApproved=loanService.approveLoan(jsonBody);
         if (isApproved) {
-            ctx.status(200).json(new JSONObject().put("message", "Loan Approved"));
+            ctx.status(200).json(new JSONObject().put("message", "Loan Approved").toString());
         } else {
-            ctx.status(404).json(new JSONObject().put("message", "Loan not Approved"));
+            ctx.status(404).json(new JSONObject().put("message", "Loan not Approved").toString());
         }
     }
 
     public void rejectLoan(Context ctx) {
         String body= ctx.body();
         JSONObject jsonBody = new JSONObject(body);
-        boolean isRejected=loanService.approveLoan(jsonBody);
+        boolean isRejected=loanService.rejectLoan(jsonBody);
         if (isRejected) {
-            ctx.status(200).json(new JSONObject().put("message", "Loan Rejected"));
+            ctx.status(200).json(new JSONObject().put("message", "Loan Rejected").toString());
         } else {
-            ctx.status(404).json(new JSONObject().put("message", "Loan not Rejected"));
+            ctx.status(404).json(new JSONObject().put("message", "Loan not Rejected").toString());
         }
     }
 }

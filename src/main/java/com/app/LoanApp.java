@@ -1,3 +1,5 @@
+package com.app;
+
 import com.app.controller.LoanController;
 import com.app.controller.UserController;
 import com.app.service.AuthMiddleware;
@@ -11,8 +13,11 @@ import java.sql.SQLException;
 
 public class LoanApp {
     public static void main(String[] args) {
+        startApp(7777);
+    }
+    public static Javalin startApp(int port) {
 
-        Javalin app = Javalin.create().start(7777);
+        Javalin app = Javalin.create().start(port);
         dataBaseInit();
 
         UserController userController=new UserController();
@@ -33,11 +38,13 @@ public class LoanApp {
             });
             ApiBuilder.path("manager/loans", () -> {
                 ApiBuilder.before(AuthMiddleware::authenticate);
+                ApiBuilder.get("/all", loanController::getAllLoans);
                 ApiBuilder.put("/approve", loanController::approveLoan);
                 ApiBuilder.put("/reject", loanController::rejectLoan);
             });
 
         });
+        return app;
     }
 
     public static void dataBaseInit() {

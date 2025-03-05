@@ -5,11 +5,20 @@ import java.sql.Timestamp;
 public class Loan {
 
 
+    private Integer id;
     private String userName;
     private Long amount;
     private LoanType loanType;
     private String status;
     private Timestamp createdDate;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getUserName() {
         return userName;
