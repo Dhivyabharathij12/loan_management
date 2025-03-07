@@ -25,8 +25,13 @@ public enum LoanType {
     }
 
     public static LoanType getLoanName(String name){
-        LoanType loanName = LoanType.valueOf(name);
-        return loanName;
+        try {
+            LoanType loanName = LoanType.valueOf(name);
+            return loanName;
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
 

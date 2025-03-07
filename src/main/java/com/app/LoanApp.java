@@ -16,18 +16,20 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class LoanApp {
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         startApp(7777);
     }
-    public static Javalin startApp(int port) {
+    public static Javalin startApp(int port)
+    {
 
         Javalin app = Javalin.create().start(port);
         dataBaseInit();
-
+        //create repository
         UserRepository userRepository = new UserRepository();
         LoanRepository loanRepository = new LoanRepository();
 
-        // Create services
+        // Create services-
         UserService userService = new UserService(userRepository);
         LoanService loanService = new LoanService(loanRepository);
 
@@ -43,12 +45,12 @@ public class LoanApp {
             });
 
             ApiBuilder.path("user/loans", () -> {
-                ApiBuilder.before(AuthMiddleware::authenticate);
+                ApiBuilder.before(AuthMiddleware::authenticateUser);
                 ApiBuilder.post("/apply",loanController::applyLoan);
                 ApiBuilder.get("/all", loanController::getLoans);
             });
             ApiBuilder.path("manager/loans", () -> {
-                ApiBuilder.before(AuthMiddleware::authenticate);
+                ApiBuilder.before(AuthMiddleware::authenticateManager);
                 ApiBuilder.get("/all", loanController::getAllLoans);
                 ApiBuilder.put("/approve", loanController::approveLoan);
                 ApiBuilder.put("/reject", loanController::rejectLoan);

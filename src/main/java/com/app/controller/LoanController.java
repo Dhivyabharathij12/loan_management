@@ -5,17 +5,21 @@ import io.javalin.http.Context;
 import org.json.JSONObject;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class LoanController {
     private static final Map<Integer, JSONObject> loans = new ConcurrentHashMap<>();
     LoanService loanService;
+    //constructor injection
     public LoanController(LoanService loanService){
         this.loanService=loanService;
     }
     public void applyLoan(Context ctx) {
         String body = ctx.body();
         JSONObject json = new JSONObject(body);
+        String username=ctx.attribute("username");
+        json.put("username", username);
 
         boolean isLoanAdded=loanService.saveLoanDetails(json);
         if(isLoanAdded){
@@ -26,7 +30,7 @@ public class LoanController {
     }
 
     public void getLoans(Context ctx) {
-        String userName= ctx.queryParam("username");
+        String userName= ctx.attribute("username");
         List<JSONObject> loanList = loanService.getLoansListForUser(userName);
         ctx.status(200).json(loanList.toString());
     }

@@ -10,7 +10,8 @@ public class JwtUtil {
 
     static String getKey(String role){
 
-        if(null != role && MANAGER.name().equals(role.toUpperCase())){
+        if(null != role && MANAGER.name().equals(role.toUpperCase()
+        )){
             return MANAGER_SECRET_KEY;
         }
         return USER_SECRET_KEY;

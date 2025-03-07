@@ -4,10 +4,7 @@ import com.app.LoanApp;
 import io.javalin.Javalin;
 import okhttp3.*;
 import org.junit.jupiter.api.*;
-
-
 import java.io.IOException;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -79,6 +76,7 @@ public class LoanAppTest {
 
         Request request = new Request.Builder()
                 .url(baseUrl + "/user/loans/apply")
+
                 .post(body)
                 .build();
 

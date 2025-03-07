@@ -48,7 +48,8 @@ public class TokenUtil {
     }
 
     // Validate Token
-    public static String validateToken(String role, String token) {
+    public static String
+    validateToken(String role, String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(getSecretKey(getKey(role)))
                 .parseClaimsJws(token)

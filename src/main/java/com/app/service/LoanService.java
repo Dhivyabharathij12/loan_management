@@ -22,9 +22,9 @@ public class LoanService {
 
     public boolean saveLoanDetails(JSONObject json) {
 
-        String userName= json.getString("username");
-        Long amount= json.getLong("amount");
-        LoanType loanType= LoanType.getLoanName(json.getString("loanType"));
+        String userName= json.optString("username");
+        Long amount= json.optLong("amount");
+        LoanType loanType= LoanType.getLoanName(json.optString("loanType"));
         json.put("status", "pending");
 
         Loan loan=new Loan();

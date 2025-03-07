@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LoanRepository {
-    UserRepository userRepository =new UserRepository();
+    public UserRepository userRepository =new UserRepository();
     public boolean saveLoan(Loan loan) {
         try {
 

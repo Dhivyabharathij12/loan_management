@@ -10,7 +10,22 @@ public class Loan {
     private Long amount;
     private LoanType loanType;
     private String status;
+
+    public Loan() {
+    }
+
     private Timestamp createdDate;
+
+
+
+    public Loan(Integer id, String userName, Long amount, LoanType loanType, String status, Timestamp createdDate) {
+        this.id = id;
+        this.userName = userName;
+        this.amount = amount;
+        this.loanType = loanType;
+        this.status = status;
+        this.createdDate = createdDate;
+    }
 
     public Integer getId() {
         return id;
